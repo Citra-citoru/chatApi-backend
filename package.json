@@ -29,6 +29,7 @@
     "lodash": "^4.17.5",
     "morgan": "^1.9.1",
     "mysql2": "1.7.0",
+    "newman": "^5.2.4",
     "nodemon": "^1.19.3",
     "parse-duration": "^1.0.0",
     "path": "^0.12.7",

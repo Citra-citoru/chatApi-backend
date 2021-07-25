@@ -1,12 +1,12 @@
-# Starter pack for NodeJs API
+# Chat API
 
 ## Dependencies
 
 - runs on node.js v10.16.3
 - [express 4+](http://expressjs.com/)
 - [eslint](http://eslint.org/)
-- [mysql] - docker image of mysql
-- [POSTMAN](https://www.getpostman.com) chrome extension for verification
+- mysql
+- POSTMAN
 
 ## Configuration
 
@@ -23,14 +23,11 @@
 ## Local Deployment
 
 - Please make sure to configure url of database rightly in `config/config.json` or use **host:0.0.0.0**.
-- mongo docker instance run : cd docker/postgre ->run docker-compose up
 - Install dependencies `npm i`
 - run lint check `npm run lint`
 - Start app `npm start`
 
-## Verification
-
-- Load postman collection:
-  - endpoints: docs/api.postman_collection.json
-  - environment: docs/api.postman_environment.json
-  - use Authorization header Bearer {{user_token}}
+## Verify API
+```
+newman run https://www.getpostman.com/collections/f9e111c9c501c63fa327
+```
