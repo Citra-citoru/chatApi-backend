@@ -44,16 +44,7 @@ function* login(entity) {
   if (!password) {
     throw errors.BadRequestError('invalid password');
   }
-
-  const updateUser = new User({
-    name: user.name,
-    password: user.password,
-    lastSeen: new Date().getTime()
-  });
-
-  const userObj = yield User.update(updateUser, { where: { name: entity.name } });
-
-  const ret = userObj ? toJSON(updateUser) : updateUser;
+  const ret = toJSON(user);
   return {
     token: generateToken(ret)
   };
