@@ -49,14 +49,29 @@ function* deleteMessage(req, res, next) {
 }
 
 /**
- * get Message by id
+ * get Messages by UserId
  * @param req the request
  * @param res the response
  */
-function* getMessageByContent(req, res, next) {
+function* getMessagesByUserId(req, res, next) {
   try {
-    const messages = yield service.findMessageByContent(req.params.id);
+    const messages = yield service.findMessagesByUserId(req.params.id);
     res.status(200).json(messages);
+  } catch (ex) {
+    next(ex);
+  }
+}
+
+/**
+ * get Messages by UserId
+ * @param req the request
+ * @param res the response
+ */
+
+function* getMessageById(req, res, next) {
+  try {
+    const message = yield service.findMessageById(req.params.id);
+    res.status(200).json(message);
   } catch (ex) {
     next(ex);
   }
@@ -79,7 +94,8 @@ function* getMessages(req, res, next) {
 module.exports = {
   createMessage,
   getMessages,
-  getMessageByContent,
+  getMessagesByUserId,
+  getMessageById,
   updateMessage,
   deleteMessage
 };

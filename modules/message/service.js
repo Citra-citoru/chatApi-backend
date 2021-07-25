@@ -4,9 +4,15 @@
  * This service will provide database operation.
  */
 const Joi = require('joi');
+const Sequelize = require('sequelize');
+const path = require('path');
 const logger = require('../../common/logger');
 const { Message } = require('../../models');
 
+const env = process.env.NODE_ENV || 'development';
+
+// eslint-disable-next-line import/no-dynamic-require
+const config = require(path.join(__dirname, '../../config/config.json'))[env];
 /**
  * Create new message
  * @param {Object} message the new message
@@ -40,14 +46,43 @@ findMessages.schema = {
 };
 
 /**
- * Get By User Content
- * @param {Object} someString
+ * Get Messages By User Id
+ * @param {Object} userId
  */
-function* findMessageByContent(someString) {
-  const searchFor = '%' + someString + '%';
-  const message = yield Message.findAll({ where: { searchFor } });
+function* findMessagesByUserId(userId) {
+  const sequelize = new Sequelize(config.database, config.username, config.password, config);
+  const messages = yield sequelize.query(
+    `select 
+    f.name as fromName,
+    t.name as toName,
+    m.content,
+    (SELECT m.content
+    FROM messages as m
+    WHERE (m.fromId=:id or m.toId=:id) order by createdAt desc limit 1)  as lastMessage,
+    (SELECT Count(*) 
+    FROM messages as m
+    WHERE (m.fromId=:id or m.toId=:id) and isRead=false) as UnRead
+    from messages as m
+    left join users as t on t.id= m.toId
+    left join users as f on f.id= m.fromId
+    where (m.fromId=:id or m.toId=:id)
+    `,
+    { replacements: { id: userId } },
+    { type: sequelize.QueryTypes.SELECT }
+  );
+  return messages;
+}
+
+/**
+ * Get Meesage By message Id
+ * @param {Object} id
+ */
+function* findMessageById(id) {
+  const message = yield Message.findOne({ where: { id } })
+    .then((msg) => msg.update({ isRead: true }));
   return message;
 }
+
 /**
  * Update message
  * @param {*} message
@@ -81,7 +116,8 @@ function* deleteMessage(id) {
 module.exports = {
   createMessage,
   findMessages,
-  findMessageByContent,
+  findMessagesByUserId,
+  findMessageById,
   updateMessage,
   deleteMessage
 };

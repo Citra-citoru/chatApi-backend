@@ -46,6 +46,10 @@ module.exports = {
     }
   },
   '/messages/:id': {
+    get: {
+      controller: '/message/controller',
+      method: 'getMessagesByUserId'
+    },
     put: {
       controller: '/message/controller',
       method: 'updateMessage'
@@ -55,10 +59,10 @@ module.exports = {
       method: 'deleteMessage'
     }
   },
-  'messages/:content': {
+  '/message/:id': {
     get: {
       controller: '/message/controller',
-      method: 'getMessageByContent'
+      method: 'getMessageById'
     }
   }
 };
