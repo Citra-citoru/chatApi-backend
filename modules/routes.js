@@ -3,6 +3,7 @@
 /**
  * Contains all routes.
  */
+const auth = require('../common/auth.middleware');
 
 module.exports = {
   '/login': {
@@ -18,51 +19,61 @@ module.exports = {
     },
     get: {
       controller: '/user/controller',
-      method: 'getUsers'
+      method: 'getUsers',
+      middleware: auth()
     }
   },
   '/users/:id': {
     get: {
       controller: '/user/controller',
-      method: 'getUserById'
+      method: 'getUserById',
+      middleware: auth()
     },
     put: {
       controller: '/user/controller',
-      method: 'updateUser'
+      method: 'updateUser',
+      middleware: auth()
     },
     delete: {
       controller: '/user/controller',
-      method: 'deleteUser'
+      method: 'deleteUser',
+      middleware: auth()
     }
   },
   '/messages': {
     post: {
       controller: '/message/controller',
-      method: 'createMessage'
+      method: 'createMessage',
+      middleware: auth()
     },
     get: {
       controller: '/message/controller',
-      method: 'getMessages'
+      method: 'getMessages',
+      middleware: auth()
     }
   },
   '/messages/:id': {
     get: {
       controller: '/message/controller',
-      method: 'getMessagesByUserId'
+      method: 'getMessagesByUserId',
+      middleware: auth()
     },
     put: {
       controller: '/message/controller',
-      method: 'updateMessage'
+      method: 'updateMessage',
+      middleware: auth()
     },
     delete: {
       controller: '/message/controller',
-      method: 'deleteMessage'
+      method: 'deleteMessage',
+      middleware: auth()
     }
   },
   '/message/:id': {
     get: {
       controller: '/message/controller',
-      method: 'getMessageById'
+      method: 'getMessageById',
+      middleware: auth()
     }
   }
 };

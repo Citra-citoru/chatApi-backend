@@ -30,10 +30,15 @@ module.exports = (app) => {
             req.signature = `${def.controller}#${def.method}`;
             next();
           });
+          // Authentication and Authorization
+          if (def.middleware && def.middleware.length > 0) {
+            actions.push(def.middleware);
+          }
           actions.push(method);
           app[verb](
             `/api/${config.version}${path}`,
             helper.autoWrapExpress(actions)
+
           );
         });
       }

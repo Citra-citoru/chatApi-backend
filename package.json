@@ -21,6 +21,7 @@
     "config": "^3.3.6",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-jwt": "^6.0.0",
     "fs": "0.0.1-security",
     "get-parameter-names": "^0.3.0",
     "glob": "^7.1.4",
@@ -33,7 +34,7 @@
     "nodemon": "^1.19.3",
     "parse-duration": "^1.0.0",
     "path": "^0.12.7",
-    "sequelize": "^5.19.6",
+    "sequelize": "^6.6.5",
     "winston": "^3.2.1"
   },
   "devDependencies": {
