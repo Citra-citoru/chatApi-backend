@@ -9,13 +9,23 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    lastMessage: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: ''
+    },
+    unRead: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
     }
   });
-
   return User;
 };
