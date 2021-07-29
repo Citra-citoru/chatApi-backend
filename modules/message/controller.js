@@ -12,7 +12,11 @@ const service = require('./service');
  */
 function* createMessage(req, res, next) {
   try {
-    const message = yield service.createMessage(req.body);
+    const fromId = req.authUser.id; // createdBy or sender
+    const { toId } = req.body;
+    const message = yield service.createMessage(req.body, fromId);
+    yield service.addMessage(fromId, message.id);
+    yield service.addMessage(toId, message.id);
     res.status(201).json(message);
   } catch (ex) {
     next(ex);
