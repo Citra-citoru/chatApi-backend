@@ -7,10 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV1,
       primaryKey: true
     },
-    fromId: {
-      type: DataTypes.UUID
-    },
-    toId: {
+    sendTo: {
       type: DataTypes.UUID
     },
     content: {
@@ -19,6 +16,12 @@ module.exports = (sequelize, DataTypes) => {
     isRead: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
+    },
+    createdBy: {
+      type: DataTypes.UUID
+    },
+    updatedBy: {
+      type: DataTypes.UUID
     }
   });
   return Message;
