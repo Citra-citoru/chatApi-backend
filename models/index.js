@@ -35,7 +35,7 @@ sequelize
   });
 
 // database creation
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync({ force: true, raw: true }).then(() => {
   console.log('Database & tables created!');
 });
 
@@ -44,7 +44,8 @@ fs.readdirSync(__dirname)
     (file) => file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
   )
   .forEach((file) => {
-    const model = sequelize.import(path.join(__dirname, file));
+    // eslint-disable-next-line import/no-dynamic-require
+    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
     db[model.name] = model;
   });
 
@@ -60,18 +61,11 @@ db.Sequelize = Sequelize;
 db.messages = require('./message')(sequelize, Sequelize);
 db.users = require('./user')(sequelize, Sequelize);
 
-/**
- * set many to one relation
- * @param source the many entity table
- * @param target the one entity table
- * @param options the options
- */
-const belongsTo = (source, target, options) => {
-  source.belongsTo(target, options);
-};
+const user_message = sequelize.define('user_message', {
+}, { timestamps: false });
 
-belongsTo(db.messages, db.users, { onDelete: 'CASCADE', foreignKey: 'toId', targetKey: 'id' });
-belongsTo(db.messages, db.users, { onDelete: 'CASCADE', foreignKey: 'fromId', targetKey: 'id' });
+db.users.belongsToMany(db.messages, { as: 'messages', through: user_message });
+db.messages.belongsToMany(db.users, { as: 'users', through: user_message });
 
 db.sequelize.sync({ force: true }).then(() => {
   console.log('Drop and re-sync db.');
